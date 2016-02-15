@@ -3,10 +3,22 @@
  *  CS-546
  */
 
+ var exports = module.exports = {
+     triangleArea,
+     perimeterOfTriangle,
+     areaOfSquare,
+     perimeterOfSquare,
+     areaOfCube,
+     surfaceAreaOfCube,
+     perimeterOfCube,
+     circumferenceOfCircle,
+     areaOfCircle
+ };
+
 /*
  *  Return the area of a triangle.
  */
-exports.triangleArea = function (base, height)
+function triangleArea(base, height)
 {
     if (base < 0 || height < 0)
         return -1;
@@ -17,7 +29,7 @@ exports.triangleArea = function (base, height)
 /*
  *  Return the perimeter of the triangle given 3 sides.
  */
-exports.perimeterOfTriangle = function (side1, side2, side3)
+function perimeterOfTriangle(side1, side2, side3)
 {
     if (side1 < 0 || side2 < 0 || side3 < 0)
         return -1;
@@ -28,7 +40,7 @@ exports.perimeterOfTriangle = function (side1, side2, side3)
 /*
  *  Return the area of a square given the length of one side.
  */
-exports.areaOfSquare = function (side)
+function areaOfSquare(side)
 {
     if (side < 0)
         return -1;
@@ -39,7 +51,7 @@ exports.areaOfSquare = function (side)
 /*
  *  Return the perimeter of a square given one side.
  */
-exports.perimeterOfSquare = function (side)
+function perimeterOfSquare(side)
 {
     if (side < 0)
         return -1;
@@ -50,7 +62,7 @@ exports.perimeterOfSquare = function (side)
 /*
  *  Return the area of a cube, given one side.
  */
-exports.areaOfCube = function (side)
+function areaOfCube(side)
 {
     if (side < 0)
         return -1;
@@ -61,7 +73,7 @@ exports.areaOfCube = function (side)
 /*
  *  Return the surface area of a cube, given one side.
  */
-exports.surfaceAreaOfCube = function (side)
+function surfaceAreaOfCube(side)
 {
     if (side < 0)
         return -1;
@@ -72,7 +84,7 @@ exports.surfaceAreaOfCube = function (side)
 /*
  *  Return the permiter of a cube, given one side.
  */
-exports.perimeterOfCube = function (side)
+function perimeterOfCube(side)
 {
     if (side < 0)
         return -1;
@@ -83,7 +95,7 @@ exports.perimeterOfCube = function (side)
 /*
  *  Return the circumference of a circle given a radius.
  */
-exports.circumferenceOfCircle = function (radius)
+function circumferenceOfCircle(radius)
 {
     if (radius < 0)
         return -1;
@@ -94,7 +106,7 @@ exports.circumferenceOfCircle = function (radius)
 /*
  *  Return the area of a circle given a radius.
  */
-exports.areaOfCircle = function (radius)
+function areaOfCircle(radius)
 {
     if (radius < 0)
         return -1;

@@ -3,10 +3,17 @@
  * CS-546
  */
 
+ var exports = module.exports = {
+     daysUntil,
+     daysLeftInYear,
+     daysSince,
+     nextFridayTheThirteenth
+ };
+
 /*
  *  Return the number of days between the current date and someDate.
  */
-exports.daysUntil = function (someDate)
+function daysUntil(someDate)
 {
     var today = new Date();
 
@@ -22,25 +29,25 @@ exports.daysUntil = function (someDate)
     return numDays;
 }
 
-console.log(exports.daysUntil(new Date(2020, 11, 17)));
+console.log(daysUntil(new Date(2020, 11, 17)));
 //console.log(exports.daysUntil(null));
 
 /*
  *  Return the number of days left in the year.
  */
-exports.daysLeftInYear = function ()
+function daysLeftInYear()
 {
     var today = new Date();
 
     return exports.daysUntil(new Date(today.getFullYear(), 11, 31));
 }
 
-console.log(exports.daysLeftInYear());
+console.log(daysLeftInYear());
 
 /*
  *  Return the number of days that have passed since someDate.
  */
-exports.daysSince = function (someDate)
+function daysSince(someDate)
 {
     var today = new Date();
 
@@ -55,12 +62,12 @@ exports.daysSince = function (someDate)
     return numDays;
 }
 
-console.log(exports.daysSince(new Date(2014, 11, 17)));
+console.log(daysSince(new Date(2014, 11, 17)));
 
 /*
  *  Return the date that is both a Friday and the 13th.
  */
-exports.nextFridayTheThirteenth = function ()
+function nextFridayTheThirteenth()
 {
     var today = new Date();
 
@@ -75,4 +82,4 @@ exports.nextFridayTheThirteenth = function ()
     }
 }
 
-console.log(exports.nextFridayTheThirteenth());
+console.log(nextFridayTheThirteenth());

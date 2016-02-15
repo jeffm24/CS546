@@ -3,10 +3,16 @@
  * CS-546
  */
 
+ var exports = module.exports = {
+     shallowClone,
+     shuffle,
+     randomized
+ };
+
 /*
  *  Given a base array, return a shallow copy of that array.
  */
-exports.shallowClone = function (baseArr)
+function shallowClone(baseArr)
 {
     if (baseArr == null)
         return -1;
@@ -19,12 +25,12 @@ exports.shallowClone = function (baseArr)
     return newArr;
 }
 
-console.log(exports.shallowClone([10, "blah", 50]));
+console.log(shallowClone([10, "blah", 50]));
 
 /*
  *  Randomly shuffles the given array and returns it.
  */
-exports.shuffle = function (array) {
+function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
@@ -46,12 +52,12 @@ exports.shuffle = function (array) {
 /*
  *  Given a base array, return a shallow copy of the array and return the elements in a randomized order.
  */
-exports.randomized = function (baseArr)
+function randomized(baseArr)
 {
     if (baseArr == null)
         return -1;
 
-    return exports.shallowClone(exports.shuffle(baseArr));
+    return shallowClone(shuffle(baseArr));
 }
 
-console.log(exports.randomized([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+console.log(randomized([1, 2, 3, 4, 5, 6, 7, 8, 9]));
