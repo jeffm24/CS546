@@ -65,7 +65,6 @@ function randomizeSentences(paragraph)
     var arrModule = require("./arrays.js")
 
     var splitSentences = paragraph.match(/[A-Za-z,;\'\"\s]+[.?!]/g);
-
     var shuffledSentences = arrModule.shuffle(splitSentences);
     var newParagraph = '';
 
