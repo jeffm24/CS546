@@ -5,7 +5,6 @@
 
  var exports = module.exports = {
      shallowClone,
-     shuffle,
      randomized
  };
 
@@ -14,8 +13,11 @@
  */
 function shallowClone(baseArr)
 {
-    if (baseArr == null)
-        return -1;
+    if (baseArr === null) {
+        throw "ERROR: Null input.";
+    } else if (!(baseArr instanceof Array)) {
+        throw "ERROR: Input not instanceof Array.";
+    }
 
     var newArr = [];
     for (key in baseArr) {
@@ -25,39 +27,27 @@ function shallowClone(baseArr)
     return newArr;
 }
 
-console.log(shallowClone([10, "blah", 50]));
-
-/*
- *  Randomly shuffles the given array and returns it.
- */
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
 /*
  *  Given a base array, return a shallow copy of the array and return the elements in a randomized order.
  */
 function randomized(baseArr)
 {
-    if (baseArr == null)
-        return -1;
+    if (baseArr === null) {
+        throw "ERROR: Null input.";
+    } else if (!(baseArr instanceof Array)) {
+        throw "ERROR: Input not instanceof Array."
+    }
 
-    return shallowClone(shuffle(baseArr));
+    var currentIndex = baseArr.length, randomIndex, temp;
+
+    while (currentIndex > 0) {
+
+        randomIndex = Math.floor(Math.random() * (currentIndex--));
+
+        temp = baseArr[currentIndex];
+        baseArr[currentIndex] = baseArr[randomIndex];
+        baseArr[randomIndex] = temp;
+    }
+
+    return shallowClone(baseArr);
 }
-
-console.log(randomized([1, 2, 3, 4, 5, 6, 7, 8, 9]));

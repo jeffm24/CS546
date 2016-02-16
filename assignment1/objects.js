@@ -15,8 +15,11 @@
  */
 function shallowClone(baseObject)
 {
-    if (baseObject == null)
-        return -1;
+    if (baseObject === null) {
+        throw "ERROR: Null argument.";
+    } else if (typeof baseObject !== 'object') {
+        throw "ERROR: Argument not typeof Object.";
+    }
 
     var shallowClone = {};
 
@@ -27,30 +30,26 @@ function shallowClone(baseObject)
     return shallowClone;
 }
 
-var object = {one: "one", two: "two", three: "three"};
-console.log(shallowClone(object));
-console.log(shallowClone(null));
-
 /*
  *  Return a 'deep clone' of the baseObject. A deep clone is one where each object
  *  that you encounter nested in baseObject is also deeply cloned.
  */
 function deepClone(baseObject)
 {
-    if (baseObject == null)
-        return -1;
+    if (baseObject === null) {
+        throw "ERROR: Null argument.";
+    } else if (typeof baseObject !== 'object') {
+        throw "ERROR: Argument not typeof Object.";
+    }
 
     function deepCloneHelp(baseObject, deepClone) {
         if (typeof yourVariable != 'object')
             return baseObject;
 
         for (var key in baseObject) {
-            shallowClone[key] = deepCloneHelp(baseObject[key]);
+            deepClone[key] = deepCloneHelp(baseObject[key]);
         }
     }
 
     return deepCloneHelp(baseObject, {});
 }
-
-var object2 = {one: {num1: 1, num2: 2, object: {}}, two: "two", three: {}};
-console.log(deepClone(object2));

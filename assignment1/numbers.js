@@ -20,8 +20,11 @@
  */
 function triangleArea(base, height)
 {
-    if (base < 0 || height < 0)
-        return -1;
+    if (base < 0 || height < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof base !== 'number' || typeof height !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return 0.5 * base * height;
 }
@@ -31,8 +34,11 @@ function triangleArea(base, height)
  */
 function perimeterOfTriangle(side1, side2, side3)
 {
-    if (side1 < 0 || side2 < 0 || side3 < 0)
-        return -1;
+    if (side1 < 0 || side2 < 0 || side3 < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof side1 !== 'number' || typeof side2 !== 'number' || typeof side3 !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return side1 + side2 + side3;
 }
@@ -42,8 +48,11 @@ function perimeterOfTriangle(side1, side2, side3)
  */
 function areaOfSquare(side)
 {
-    if (side < 0)
-        return -1;
+    if (side < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof side !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return side * side;
 }
@@ -53,8 +62,11 @@ function areaOfSquare(side)
  */
 function perimeterOfSquare(side)
 {
-    if (side < 0)
-        return -1;
+    if (side < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof side !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return side * 4;
 }
@@ -64,8 +76,11 @@ function perimeterOfSquare(side)
  */
 function areaOfCube(side)
 {
-    if (side < 0)
-        return -1;
+    if (side < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof side !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return side * side * side;
 }
@@ -75,8 +90,11 @@ function areaOfCube(side)
  */
 function surfaceAreaOfCube(side)
 {
-    if (side < 0)
-        return -1;
+    if (side < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof side !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return 6 * (side * side);
 }
@@ -86,8 +104,11 @@ function surfaceAreaOfCube(side)
  */
 function perimeterOfCube(side)
 {
-    if (side < 0)
-        return -1;
+    if (side < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof side !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
     return 12 * side;
 }
@@ -97,10 +118,13 @@ function perimeterOfCube(side)
  */
 function circumferenceOfCircle(radius)
 {
-    if (radius < 0)
-        return -1;
+    if (radius < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof radius !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
-    return 2 * Math.PI * radius;
+    return (2 * Math.PI * radius).toFixed(2);
 }
 
 /*
@@ -108,8 +132,11 @@ function circumferenceOfCircle(radius)
  */
 function areaOfCircle(radius)
 {
-    if (radius < 0)
-        return -1;
+    if (radius < 0) {
+        throw "ERROR: Negative argument.";
+    } else if (typeof radius !== 'number') {
+        throw "ERROR: Argument not typeof number."
+    }
 
-    return Math.PI * (radius * radius);
+    return (Math.PI * (radius * radius)).toFixed(2);
 }

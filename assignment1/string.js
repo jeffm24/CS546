@@ -14,8 +14,10 @@
  */
 function occurrencesOfSubstring(main, substr)
 {
-    if (main == null || substr == null) {
-        return -1;
+    if (main === null || substr === null) {
+        throw "ERROR: Null argument.";
+    } else if (typeof main !== 'string' || typeof substr !== 'string') {
+        throw "ERROR: Argument not typeof String";
     } else if (substr.length > main.length) {
         return 0;
     }
@@ -23,21 +25,21 @@ function occurrencesOfSubstring(main, substr)
     var regex = new RegExp(substr, 'g');
     var matches = main.match(regex);
 
-    if (matches != null)
+    if (matches !== null)
         return matches.length;
     else
         return 0;
 }
-
-console.log(occurrencesOfSubstring("varvarVar", "var"));
 
 /*
  *  Count and return how many times a substring occurs in a main string; this function is case insensitive.
  */
 function occurrencesOfSubstringInsensivie(main, substr)
 {
-    if (main == null || substr == null) {
-        return -1;
+    if (main === null || substr === null) {
+        throw "ERROR: Null argument.";
+    } else if (typeof main !== 'string' || typeof substr !== 'string') {
+        throw "ERROR: Argument not typeof String";
     } else if (substr.length > main.length) {
         return 0;
     }
@@ -51,22 +53,29 @@ function occurrencesOfSubstringInsensivie(main, substr)
         return 0;
 }
 
-console.log(occurrencesOfSubstringInsensivie("varvarVar", "var"));
-
 /*
  *  Given a string representing a paragraph, reorder the sentences. Return a new string representing a paragraph
  *  where the sentences are randomly ordered.
  */
 function randomizeSentences(paragraph)
 {
-    if (paragraph == null)
-        return -1;
+    if (paragraph === null) {
+        throw "ERROR: Null argument.";
+    } else if (typeof paragraph !== 'string') {
+        throw "ERROR: Argument not typeof String";
+    }
 
     var arrModule = require("./arrays.js")
 
     var splitSentences = paragraph.match(/[A-Za-z,;\'\"\s]+[.?!]/g);
-    var shuffledSentences = arrModule.shuffle(splitSentences);
-    var newParagraph = '';
+
+    if (splitSentences === null) {
+        throw "ERROR: Paragraph not properly formed.";
+    }
+
+    var shuffledSentences = arrModule.randomized(splitSentences);
+
+    var newParagraph = "";
 
     for (sentence of shuffledSentences) {
         newParagraph += sentence.trim() + " ";
@@ -74,5 +83,3 @@ function randomizeSentences(paragraph)
 
     return newParagraph;
 }
-
-console.log(randomizeSentences("This is a test of randomizing a paragraph. Testing; testing; testing. Blah blah blah. This is still a test."));

@@ -17,10 +17,12 @@ function daysUntil(someDate)
 {
     var today = new Date();
 
-    if (someDate == null) {
-        throw "ERROR: null date";
+    if (someDate === null) {
+        throw "ERROR: Null argument.";
+    } else if (!(someDate instanceof Date)) {
+        throw "ERROR: Argument not instanceof Date.";
     } else if (someDate < today) {
-        throw "ERROR: date falls before current date";
+        throw "ERROR: Date falls before current date.";
     }
 
     var msPerDay = 1000 * 60 * 60 * 24;
@@ -28,9 +30,6 @@ function daysUntil(someDate)
 
     return numDays;
 }
-
-console.log(daysUntil(new Date(2020, 11, 17)));
-//console.log(exports.daysUntil(null));
 
 /*
  *  Return the number of days left in the year.
@@ -42,8 +41,6 @@ function daysLeftInYear()
     return exports.daysUntil(new Date(today.getFullYear(), 11, 31));
 }
 
-console.log(daysLeftInYear());
-
 /*
  *  Return the number of days that have passed since someDate.
  */
@@ -51,18 +48,19 @@ function daysSince(someDate)
 {
     var today = new Date();
 
-    if (someDate == null)
-        throw "ERROR: null date";
-    else if (someDate > today)
-        throw "ERROR: date falls after current date"
+    if (someDate === null) {
+        throw "ERROR: Null argument.";
+    } else if (!(someDate instanceof Date)) {
+        throw "ERROR: Argument not instanceof Date.";
+    } else if (someDate > today) {
+        throw "ERROR: Date falls after current date.";
+    }
 
     var msPerDay = 1000 * 60 * 60 * 24;
     var numDays = Math.floor((today - someDate) / msPerDay);
 
     return numDays;
 }
-
-console.log(daysSince(new Date(2014, 11, 17)));
 
 /*
  *  Return the date that is both a Friday and the 13th.
@@ -81,5 +79,3 @@ function nextFridayTheThirteenth()
         }
     }
 }
-
-console.log(nextFridayTheThirteenth());
