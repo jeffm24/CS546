@@ -38,7 +38,7 @@ function daysLeftInYear()
 {
     var today = new Date();
 
-    return exports.daysUntil(new Date(today.getFullYear(), 11, 31));
+    return daysUntil(new Date(today.getFullYear(), 11, 31));
 }
 
 /*
