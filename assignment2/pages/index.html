@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My To-Do List</title>
+
+    <!-- Bootstrap -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        body {
+            font-family: helvetica, arial;
+        }
+
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            margin: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>CS-546 Assignment 2</h1>
+                <h2>Jeff Mariconda</h2>
+            </div>
+        </div>
+        <main>
+            <h2>My To-Do List</h2>
+            <p>
+                The different routes I have set up will allow me to manage a basic To-Do list. I will be able to view all entries by status, view specific entries by id, and add, modify, and remove entries.
+            </p>
+
+            <section>
+                <h3>Add a new entry:</h3>
+                <form method="post" action="/api/todo">
+                    <label for="author">author:</label>
+                    <input type="text" name="author">
+                    <br />
+                    <label for="taskTitle">taskTitle:</label>
+                    <input type="text" name="taskTitle">
+                    <br />
+                    <label for="taskDescription">taskDescription:</label>
+                    <input type="textarea" name="taskDescription">
+                    <br />
+                    <input type="submit" value="Submit">
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- jQuery fallback -->
+    <script>
+        if (!window.jQuery) { document.write('<script src="/assets/js/jquery.js"><\/script>'); }
+    </script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+</body>
+
+</html>
