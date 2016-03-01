@@ -61,16 +61,19 @@ app.get("/api/todo/:id", function (request, response) {
         var res = myToDoEntries.getToDoEntry(parseInt(request.params.id));
         response.json({status: "success", result: res});
     } catch (e) {
-        response.status(500).json({status: "error", message: e});
+        response.status(404).json({status: "error", message: e});
     }
 });
 
 app.put("/api/todo/:id", function (request, response) {
     try {
-        var res = myToDoEntries.modifyEntry(request.params.id, request.body);
+        var res = myToDoEntries.modifyEntry(parseInt(request.params.id), request.body);
         response.json({status: "success", result: res});
     } catch (e) {
-        response.status(500).json({status: "error", message: e});
+        if (e === 'You must provide valid information in the request body to create an entry.')
+            response.status(500).json({status: "error", message: e});
+        else if (e === 'An entry with the ID of {' + request.params.id + '} could not be found.')
+            response.status(404).json({status: "error", message: e});
     }
 });
 
@@ -85,15 +88,23 @@ app.post("/api/todo", function (request, response) {
 
 app.post("/api/todo/:id/notes", function (request, response) {
     try {
-        var res = myToDoEntries.addNoteToEntry(request.params.id, request.body);
+        var res = myToDoEntries.addNoteToEntry(parseInt(request.params.id), request.body);
         response.json({status: "success", result: res});
     } catch (e) {
-        response.status(500).json({status: "error", message: e});
+        if (e === 'You must provide valid information in the request body to create an entry.')
+            response.status(500).json({status: "error", message: e});
+        else if (e === 'An entry with the ID of {' + request.params.id + '} could not be found.')
+            response.status(404).json({status: "error", message: e});
     }
 });
 
 app.delete("/api/todo/:id", function (request, response) {
-
+    try {
+        var res = myToDoEntries.deleteEntry(parseInt(request.params.id));
+        response.json({status: "success", result: res});
+    } catch (e) {
+        response.status(404).json({status: "error", message: e});
+    }
 });
 
 // We can now navigate to localhost:3000

@@ -46,9 +46,9 @@ function getToDoEntries() {
 function getOpenToDoEntries() {
     var openEntries = [];
 
-    for (entry in toDoEntries) {
-        if (entry['status'] === 'open')
-            openEntries.push(entry);
+    for (var i = 0 ; i < toDoEntries.length ; i++) {
+        if (toDoEntries[i]['status'] === 'open')
+            openEntries.push(toDoEntries[i]);
     }
 
     return openEntries;
@@ -60,9 +60,9 @@ function getOpenToDoEntries() {
 function getCompletedToDoEntries() {
     var completedEntries = [];
 
-    for (entry in toDoEntries) {
-        if (entry['status'] === 'completed')
-            completedEntries.push(entry);
+    for (var i = 0 ; i < toDoEntries.length ; i++) {
+        if (toDoEntries[i]['status'] === 'completed')
+            completedEntries.push(toDoEntries[i]);
     }
 
     return completedEntries;
@@ -78,17 +78,15 @@ function getToDoEntry(id) {
     else if (id < 0)
         throw "Negative argument.";
 
-    for (entry in toDoEntries) {
-        if (entry['id'] === id) {
-            return entry;
+    for (var i = 0 ; i < toDoEntries.length ; i++) {
+        if (toDoEntries[i]['id'] === id) {
+            return toDoEntries[i];
         }
     }
 
     // error case if no entry is found
     throw "An entry with the ID of {" + id + "} could not be found.";
 }
-
-
 
 /*
  *  Adds a new ToDoEntry to the toDoEntries array.
@@ -127,9 +125,10 @@ function modifyEntry(id, requestBody) {
 
         throw "Argument not typeof object.";
 
-    } else if (!('taskTitle' in requestBody) && !('taskDescription' in requestBody) && !('status' in requestBody)
-                && requestBody['taskTitle'].isEmpty() && requestBody['taskDescription'].isEmpty() && requestBody['status'].isEmpty()
-                && (requestBody['status'] !== 'open' || requestBody['status'] !== 'completed')) {
+    } else if ((!('taskTitle' in requestBody) && !('taskDescription' in requestBody) && !('status' in requestBody))
+                || (requestBody['taskTitle'].isEmpty() && requestBody['taskDescription'].isEmpty() && requestBody['status'].isEmpty())
+                || (('status' in requestBody) && !requestBody['status'].isEmpty() && requestBody['status'] !== 'open' && requestBody['status'] !== 'completed')
+                || (typeof id !== 'number')) {
 
         throw "You must provide valid information in the request body to create an entry.";
 
@@ -138,8 +137,8 @@ function modifyEntry(id, requestBody) {
     var modifiedEntry = getToDoEntry(id);
 
     for (key in requestBody) {
-        if (key === 'taskTitle' || key === 'taskDescription' || key === 'status') {
-            entry[key] = requestBody[key];
+        if ((key === 'taskTitle' || key === 'taskDescription' || key === 'status') && !requestBody[key].isEmpty()) {
+            modifiedEntry[key] = requestBody[key];
         }
     }
 
@@ -152,7 +151,7 @@ function modifyEntry(id, requestBody) {
 function addNoteToEntry(id, requestBody) {
     if (typeof requestBody !== 'object') {
         throw "Argument not typeof object.";
-    } else if (!('note' in requestBody)) {
+    } else if (!('note' in requestBody) || requestBody['note'].isEmpty()) {
         throw "You must provide valid information in the request body to create an entry.";
     }
 
@@ -167,5 +166,18 @@ function addNoteToEntry(id, requestBody) {
  *  Deletes the ToDoEntry with the given id.
  */
  function deleteEntry(id) {
-     toDoEntries = toDoEntries.splice(toDoEntries.indexOf(getToDoEntry(id)), 1);
+     if (typeof id !== 'number')
+         throw "Argument not a number.";
+     else if (id < 0)
+         throw "Negative argument.";
+
+     for (var i = 0 ; i < toDoEntries.length ; i++) {
+         if (toDoEntries[i]['id'] === id) {
+             toDoEntries.splice(i, 1);
+             return true;
+         }
+     }
+
+     // error case if no entry is found
+     throw "An entry with the ID of {" + id + "} could not be found.";
  }

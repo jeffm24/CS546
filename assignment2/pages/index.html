@@ -27,6 +27,10 @@
             padding: 5px;
             margin: 0px;
         }
+
+        main {
+            margin: 10px;
+        }
     </style>
 </head>
 
@@ -45,8 +49,24 @@
             </p>
 
             <section>
+                <a href="/api/todo">Show all entries</a><br />
+                <a href="/api/todo/open">Show all open entries</a><br />
+                <a href="/api/todo/completed">Show all completed entries</a>
+            </section>
+
+            <section>
+                <h3>Get entry:</h3>
+                <form id="getEntryForm">
+                    <label for="id">id:</label>
+                    <input type="number" min=0 step=1 name="id">
+                    <br />
+                    <input type="submit" value="Get Entry">
+                </form>
+            </section>
+
+            <section>
                 <h3>Add a new entry:</h3>
-                <form method="post" action="/api/todo">
+                <form id="addEntryForm">
                     <label for="author">author:</label>
                     <input type="text" name="author">
                     <br />
@@ -56,7 +76,49 @@
                     <label for="taskDescription">taskDescription:</label>
                     <input type="textarea" name="taskDescription">
                     <br />
-                    <input type="submit" value="Submit">
+                    <input type="submit" value="Add Entry">
+                </form>
+            </section>
+
+            <section>
+                <h3>Delete entry:</h3>
+                <form id="deleteEntryForm">
+                    <label for="id">id:</label>
+                    <input type="number" min=0 step=1 name="id">
+                    <br />
+                    <input type="submit" value="Delete Entry">
+                </form>
+            </section>
+
+            <section>
+                <h3>Add Note to Entry:</h3>
+                <form id="noteForm">
+                    <label for="id">id:</label>
+                    <input type="number" min=0 step=1 name="id">
+                    <br />
+                    <label for="note">note:</label>
+                    <input type="textarea" name="note">
+                    <br />
+                    <input type="submit" value="Add Note">
+                </form>
+            </section>
+
+            <section>
+                <h3>Modify entry:</h3>
+                <form id="modifyForm">
+                    <label for="id">id:</label>
+                    <input type="number" min=0 step=1 name="id">
+                    <br />
+                    <label for="taskTitle">taskTitle:</label>
+                    <input type="text" name="taskTitle">
+                    <br />
+                    <label for="taskDescription">taskDescription:</label>
+                    <input type="textarea" name="taskDescription">
+                    <br />
+                    <label for="status">status:</label>
+                    <input type="text" name="status">
+                    <br />
+                    <input type="submit" value="Modify Entry">
                 </form>
             </section>
         </main>
@@ -64,6 +126,93 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script>
+
+        $('#getEntryForm').on('submit', function() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/todo/' + $('#getEntryForm input[name="id"]').val(),
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+        });
+
+        $('#addEntryForm').on('submit', function() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/todo/',
+                data: {
+                    author: $('#addEntryForm input[name="author"]').val(),
+                    taskTitle: $('#addEntryForm input[name="taskTitle"]').val(),
+                    taskDescription: $('#addEntryForm input[name="taskDescription"]').val()
+                },
+                dataType: 'json',
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+        });
+
+        $('#deleteEntryForm').on('submit', function() {
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/todo/' + $('#deleteEntryForm input[name="id"]').val(),
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+        });
+
+        $('#noteForm').on('submit', function() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/todo/' + $('#noteForm input[name="id"]').val() + '/notes',
+                data: {note: $('#noteForm input[name="note"]').val()},
+                dataType: 'json',
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+        });
+
+        $('#modifyForm').on('submit', function() {
+
+            $.ajax({
+                type: 'PUT',
+                url: '/api/todo/' + $('#modifyForm input[name="id"]').val(),
+                data: {
+                    taskTitle: $('#modifyForm input[name="taskTitle"]').val(),
+                    taskDescription: $('#modifyForm input[name="taskDescription"]').val(),
+                    status: $('#modifyForm input[name="status"]').val()
+                },
+                dataType: 'json',
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+        });
+    </script>
 
     <!-- jQuery fallback -->
     <script>
