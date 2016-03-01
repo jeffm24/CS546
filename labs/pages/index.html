@@ -51,11 +51,25 @@
                     </tr>
                     <tr>
                         <td>Calulcates the amount of money you will have in your retirement fund, assuming you put money in each month and your account accumulates interest each month.</td>
-                        <td>years, perMonth, interestRate</td>
+                        <td>years (int), perMonth (int), interestRate (float)</td>
                         <td>.../api/perMonthRetirementSavings?years=NUMBER&amp;perMonth=NUMBER&amp;interestRate=NUMBER</td>
                     </tr>
                 </table>
+                <br />
+                <form method="post" action="/results/perMonthRetirementSavings">
+                    <label for="years">years:</label>
+                    <input type="number" min=0 step=1 name="years">
+                    <br />
+                    <label for="perMonth">perMonth:</label>
+                    <input type="number" min=0 step=1 name="perMonth">
+                    <br />
+                    <label for="interestRate">interestRate:</label>
+                    <input type="number" min=0 step=0.01 name="interestRate">
+                    <br />
+                    <input type="submit" value="Submit">
+                </form>
             </section>
+
             <section>
                 <h3>investedAmount:</h3>
                 <table>
@@ -66,11 +80,25 @@
                     </tr>
                     <tr>
                         <td>Calculates the end result of a sum of money that has been sitting and growing at a particular interest rate after a number of years.</td>
-                        <td>years, intial, interestRate</td>
+                        <td>years (int), intial (int), interestRate (float)</td>
                         <td>.../api/investedAmount?years=NUMBER&amp;initial=NUMBER&amp;interestRate=NUMBER</td>
                     </tr>
                 </table>
+                <br />
+                <form method="post" action="/results/investedAmount">
+                    <label for="years">years:</label>
+                    <input type="number" min=0 step=1 name="years">
+                    <br />
+                    <label for="intial">intial:</label>
+                    <input type="number" min=0 step=1 name="intial">
+                    <br />
+                    <label for="interestRate">interestRate:</label>
+                    <input type="number" min=0 step=0.01 name="interestRate">
+                    <br />
+                    <input type="submit" value="Submit">
+                </form>
             </section>
+
             <section>
                 <h3>loanPayoff:</h3>
                 <table>
@@ -81,11 +109,25 @@
                     </tr>
                     <tr>
                         <td>Calculates how many months it will take to pay off a loan given a certain monthly payment.</td>
-                        <td>monthlyAmount, loanAmount, interestRate</td>
+                        <td>monthlyAmount (int), loanAmount (int), interestRate (float)</td>
                         <td>.../api/loanPayoff?monthlyAmount=NUMBER&amp;loanAmount=NUMBER&amp;interestRate=NUMBER</td>
                     </tr>
                 </table>
+                <br />
+                <form method="post" action="/results/loanPayoff">
+                    <label for="monthlyAmount">monthlyAmount:</label>
+                    <input type="number" min=0 step=1 name="monthlyAmount">
+                    <br />
+                    <label for="loanAmount">loanAmount:</label>
+                    <input type="number" min=0 step=1 name="loanAmount">
+                    <br />
+                    <label for="interestRate">interestRate:</label>
+                    <input type="number" min=0 step=0.01 name="interestRate">
+                    <br />
+                    <input type="submit" value="Submit">
+                </form>
             </section>
+
         </main>
         <section>
             <h2>About Jeff</h2>

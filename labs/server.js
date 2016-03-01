@@ -12,6 +12,9 @@ var myData = require('./data.js')
 // This package exports the function to create an express instance:
 var app = express();
 
+// Here we change our view engine from Jade (default) to EJS
+app.set('view engine', 'ejs');
+
 // This is called 'adding middleware', or things that will help parse your request
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -52,6 +55,13 @@ function respondLoanPayoff(response, monthlyAmount, loanAmount, interestRate) {
 }
 
 // Setup your routes here!
+
+app.get("/", function (request, response) {
+    // We have to pass a second parameter to specify the root directory
+    // __dirname is a global variable representing the file directory you are currently in
+    response.sendFile("./pages/index.html", { root: __dirname });
+});
+
 app.get("/api/perMonthRetirementSavings", function (request, response) {
 
     respondPerMonthRetirementSavings(response, request.query.years, request.query.perMonth, request.query.interestRate);
@@ -70,12 +80,50 @@ app.get("/api/loanPayoff", function (request, response) {
 
 });
 
-app.get("/", function (request, response) {
-    // We have to pass a second parameter to specify the root directory
-    // __dirname is a global variable representing the file directory you are currently in
-    response.sendFile("./pages/index.html", { root: __dirname });
+app.post("/results/perMonthRetirementSavings", function (request, response) {
+
+    try {
+        var res = myData.retirementAmountSavingPerMonth(parseInt(request.body.years, 10),
+                                                        parseInt(request.body.perMonth, 10),
+                                                        parseFloat(request.body.interestRate, 10));
+
+        response.render('pages/result', { pageTitle: "Results", operation: "perMonthRetirementSavings", res: res });
+        //response.json({status: "success", result: res});
+    } catch (e) {
+        response.status(500).render('pages/error', { pageTitle: "Error", errorMessage: e });
+        //response.status(500).json({status: "error", message: e});
+    }
 });
 
+app.post("/results/investedAmount", function (request, response) {
+
+    try {
+        var res = myData.investedAmountAfterSomeYears(parseInt(request.body.years, 10),
+                                                        parseInt(request.body.intial, 10),
+                                                        parseFloat(request.body.interestRate, 10));
+
+        response.render('pages/result', { pageTitle: "Results", operation: "investedAmount", res: res });
+        //response.json({status: "success", result: res});
+    } catch (e) {
+        response.status(500).render('pages/error', { pageTitle: "Error", errorMessage: e });
+        //response.status(500).json({status: "error", message: e});
+    }
+});
+
+app.post("/results/loanPayoff", function (request, response) {
+
+    try {
+        var res = myData.monthsToPayOffLoan(parseInt(request.body.monthlyAmount, 10),
+                                            parseInt(request.body.loanAmount, 10),
+                                            parseFloat(request.body.interestRate, 10));
+
+        response.render('pages/result', { pageTitle: "Results", operation: "loanPayoff", res: res });
+        //response.json({status: "success", result: res});
+    } catch (e) {
+        response.status(500).render('pages/error', { pageTitle: "Error", errorMessage: e });
+        //response.status(500).json({status: "error", message: e});
+    }
+});
 
 // We can now navigate to localhost:3000
 app.listen(3000, function () {
