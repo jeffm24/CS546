@@ -43,82 +43,77 @@
             </div>
         </div>
         <main>
-            <h2>My To-Do List</h2>
-            <p>
-                The different routes I have set up will allow me to manage a basic To-Do list. I will be able to view all entries by status, view specific entries by id, and add, modify, and remove entries.
-            </p>
-
             <section>
-                <a href="/api/todo">Show all entries</a><br />
-                <a href="/api/todo/open">Show all open entries</a><br />
-                <a href="/api/todo/completed">Show all completed entries</a>
+                <h2>My To-Do List</h2>
+                <p>
+                    The different routes I have set up will allow me to manage a basic To-Do list. I will be able to view all entries by status, view specific entries by id, and add, modify, and remove entries.
+                </p>
             </section>
 
             <section>
-                <h3>Get entry:</h3>
+                <h3>Get Requests:</h3>
+
+                <a href="/api/todo">Show all entries</a><br />
+                <a href="/api/todo/open">Show all open entries</a><br />
+                <a href="/api/todo/completed">Show all completed entries</a>
+
+                <h4>Get Entry:</h4>
                 <form id="getEntryForm">
-                    <label for="id">id:</label>
-                    <input type="number" min=0 step=1 name="id">
+                    <label>id: <input type="number" min=0 step=1 name="id"></label>
                     <br />
                     <input type="submit" value="Get Entry">
                 </form>
             </section>
-
+            <hr />
             <section>
-                <h3>Add a new entry:</h3>
+                <h3>POST Requests:</h3>
+
+                <h4>Add a New Entry</h4>
                 <form id="addEntryForm">
-                    <label for="author">author:</label>
-                    <input type="text" name="author">
+                    <label>author: <input type="text" name="author"></label>
                     <br />
-                    <label for="taskTitle">taskTitle:</label>
-                    <input type="text" name="taskTitle">
+                    <label>taskTitle: <input type="text" name="taskTitle"></label>
                     <br />
-                    <label for="taskDescription">taskDescription:</label>
-                    <input type="textarea" name="taskDescription">
+                    <label>taskDescription: <input type="text" name="taskDescription"></label>
                     <br />
                     <input type="submit" value="Add Entry">
                 </form>
-            </section>
 
-            <section>
-                <h3>Delete entry:</h3>
-                <form id="deleteEntryForm">
-                    <label for="id">id:</label>
-                    <input type="number" min=0 step=1 name="id">
-                    <br />
-                    <input type="submit" value="Delete Entry">
-                </form>
-            </section>
-
-            <section>
-                <h3>Add Note to Entry:</h3>
+                <h4>Add Note to Entry</h4>
                 <form id="noteForm">
-                    <label for="id">id:</label>
-                    <input type="number" min=0 step=1 name="id">
+                    <label>id: <input type="number" min=0 step=1 name="id"></label>
                     <br />
-                    <label for="note">note:</label>
-                    <input type="textarea" name="note">
+                    <label>note: <input type="text" name="note"></label>
                     <br />
                     <input type="submit" value="Add Note">
                 </form>
             </section>
-
+            <hr />
             <section>
-                <h3>Modify entry:</h3>
+                <h3>PUT Requests:</h3>
+
+                <h4>Modify Entry</h4>
                 <form id="modifyForm">
-                    <label for="id">id:</label>
-                    <input type="number" min=0 step=1 name="id">
+                    <label>id: <input type="number" min=0 step=1 name="id"></label>
                     <br />
-                    <label for="taskTitle">taskTitle:</label>
-                    <input type="text" name="taskTitle">
+                    <label>taskTitle: <input type="text" name="taskTitle"></label>
                     <br />
-                    <label for="taskDescription">taskDescription:</label>
-                    <input type="textarea" name="taskDescription">
+                    <label>taskDescription: <input type="text" name="taskDescription"></label>
                     <br />
-                    <label for="status">status:</label>
-                    <input type="text" name="status">
+                    <label>status: <input type="text" name="status"></label>
                     <br />
                     <input type="submit" value="Modify Entry">
+                </form>
+            </section>
+            <hr />
+            <section>
+                <h3>DELETE Requests:</h3>
+
+                <h4>Delete Entry</h4>
+                <form id="deleteEntryForm">
+                    <label>id: <input type="number" min=0 step=1 name="id"></label>
+                    <br />
+                    <input type="submit" value="Delete Entry">
                 </form>
             </section>
         </main>
@@ -167,22 +162,6 @@
             return false;
         });
 
-        $('#deleteEntryForm').on('submit', function() {
-            
-            $.ajax({
-                type: 'DELETE',
-                url: '/api/todo/' + $('#deleteEntryForm input[name="id"]').val(),
-                success: function(data) {
-                    alert(JSON.stringify(data));
-                },
-                error: function(xhr, status, error) {
-                    alert(xhr.responseText + ' (' + xhr.status + ')');
-                }
-            });
-
-            return false;
-        });
-
         $('#noteForm').on('submit', function() {
 
             $.ajax({
@@ -212,6 +191,22 @@
                     status: $('#modifyForm input[name="status"]').val()
                 },
                 dataType: 'json',
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+
+            return false;
+        });
+
+        $('#deleteEntryForm').on('submit', function() {
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/todo/' + $('#deleteEntryForm input[name="id"]').val(),
                 success: function(data) {
                     alert(JSON.stringify(data));
                 },
