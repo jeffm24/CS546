@@ -10,7 +10,8 @@ var exports = module.exports = {
     getToDoEntry,
     addNewEntry,
     modifyEntry,
-    addNoteToEntry
+    addNoteToEntry,
+    deleteEntry
 };
 
 var toDoEntries = [];
@@ -166,10 +167,11 @@ function addNoteToEntry(id, requestBody) {
  *  Deletes the ToDoEntry with the given id.
  */
  function deleteEntry(id) {
-     if (typeof id !== 'number')
+     if (typeof id !== 'number') {
          throw "Argument not a number.";
-     else if (id < 0)
+     } else if (id < 0) {
          throw "Negative argument.";
+     }
 
      for (var i = 0 ; i < toDoEntries.length ; i++) {
          if (toDoEntries[i]['id'] === id) {

@@ -141,6 +141,8 @@
                     alert(xhr.responseText + ' (' + xhr.status + ')');
                 }
             });
+
+            return false;
         });
 
         $('#addEntryForm').on('submit', function() {
@@ -161,10 +163,12 @@
                     alert(xhr.responseText + ' (' + xhr.status + ')');
                 }
             });
+
+            return false;
         });
 
         $('#deleteEntryForm').on('submit', function() {
-
+            
             $.ajax({
                 type: 'DELETE',
                 url: '/api/todo/' + $('#deleteEntryForm input[name="id"]').val(),
@@ -175,6 +179,8 @@
                     alert(xhr.responseText + ' (' + xhr.status + ')');
                 }
             });
+
+            return false;
         });
 
         $('#noteForm').on('submit', function() {
@@ -191,6 +197,8 @@
                     alert(xhr.responseText + ' (' + xhr.status + ')');
                 }
             });
+
+            return false;
         });
 
         $('#modifyForm').on('submit', function() {
@@ -211,6 +219,8 @@
                     alert(xhr.responseText + ' (' + xhr.status + ')');
                 }
             });
+
+            return false;
         });
     </script>
 
