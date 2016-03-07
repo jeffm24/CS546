@@ -57,9 +57,7 @@ function respondLoanPayoff(response, monthlyAmount, loanAmount, interestRate) {
 // Setup your routes here!
 
 app.get("/", function (request, response) {
-    // We have to pass a second parameter to specify the root directory
-    // __dirname is a global variable representing the file directory you are currently in
-    response.sendFile("./pages/index.html", { root: __dirname });
+    response.render('pages/index', { pageTitle: "Jeff's API Calculator" });
 });
 
 app.get("/api/perMonthRetirementSavings", function (request, response) {
