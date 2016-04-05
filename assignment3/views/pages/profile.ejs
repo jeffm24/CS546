@@ -15,7 +15,7 @@
             <li>Pet Name: <% if (petName) { %> petName <% } %></li>
         </ul>
         <hr />
-        <h2>Sign Up</h2>
+        <h2>Edit Profile Info</h2>
         <form id="editInfoForm">
             <label>First Name: <input name="firstName" placeholder="First Name" type="text"></label>
             <br />
@@ -25,21 +25,27 @@
             <br />
             <label>Pet Name: <input name="petName" placeholder="Pet Name" type="text"></label>
             <br />
-            <input type="submit" value="Sign Up">
+            <input type="submit" value="Submit">
         </form>
+        <hr />
+        <div id="signOutBtn">
+            <p>Sign Out</p>
+        </div>
     </div>
 
     <% include ../partials/scripts %>
 
     <script>
-        $('#signInForm').on('submit', function(e) {
+        $('#editInfoForm').on('submit', function(e) {
 
             $.ajax({
-                url: '/signin',
+                url: '/profile/editUserInfo',
                 type: 'POST',
                 data: {
-                    'username': $('#signInForm input[name="username"]').val(),
-                    'password': $('#signInForm input[name="password"]').val()
+                    'firstName': $('#editInfoForm input[name="firstName"]').val(),
+                    'lastName': $('#editInfoForm input[name="lastName"]').val(),
+                    'hobby': $('#editInfoForm input[name="hobby"]').val(),
+                    'petName': $('#editInfoForm input[name="petName"]').val()
                 },
                 success: function(data) {
                     location.reload();
@@ -50,6 +56,21 @@
             });
 
             return false;
+        });
+
+        $('#signOutBtn').on('click', function(e) {
+
+            $.ajax({
+                url: '/signout',
+                type: 'POST',
+                success: function(data) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText + ' (' + xhr.status + ')');
+                }
+            });
+
         });
     </script>
 </body>

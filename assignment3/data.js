@@ -90,6 +90,20 @@ MongoClient.connect(fullMongoUrl)
             });
         };
 
+        // Logs out the user with the given sessionID
+        exports.logout = function (sessionID) {
+            // Get the user associated with the given sessionID (error checking done in function call)
+            return exports.getUserBySessionID(sessionID).then(function(user) {
+                if (user) {
+                    // Clear the sessionID for the logged out user
+                    usersCollection.update({"username": user.username}, {$set: {"currentSessionId": ""}});
+                    return Promise.resolve(true);
+                } else {
+                    return Promise.reject("The user is already signed out.");
+                }
+            });
+        };
+
         // Gets a user with the given sessionID, returns null if the user does not exist
         exports.getUserBySessionID = function (sessionID) {
 
@@ -122,7 +136,7 @@ MongoClient.connect(fullMongoUrl)
 
                     return Promise.resolve(true);
                 } else {
-                    return Promise.resolve(false);
+                    return Promise.reject("The user is not logged in.");
                 }
             });
         };

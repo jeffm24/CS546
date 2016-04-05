@@ -52,6 +52,17 @@ app.get("/profile", function(request, response) {
 
 });
 
+// Updates user info using the given request body
+app.post("/profile/editUserInfo", function(request, response) {
+
+    userData.editUserInfo(request.cookies.sessionID, request.body).then(function(val) {
+        response.json({status: 'success'});
+    }, function(errorMessage) {
+        response.status(500).json({ error: errorMessage });
+    });
+
+});
+
 // Route to log the user in
 app.post("/signin", function(request, response) {
 
@@ -62,7 +73,27 @@ app.post("/signin", function(request, response) {
             expiresAt.setHours(expiresAt.getHours() + 5);
 
             response.cookie("sessionID", sessionID, { expires: expiresAt });
-            console.log("Created new sessionID cookie: {sessionID: " + sessionID + "}");
+            //console.log("Created new sessionID cookie: {sessionID: " + sessionID + "}");
+
+            response.json({status: "success"});
+        }
+    }, function(errorMessage) {
+        response.status(500).json({ error: errorMessage });
+    });
+
+});
+
+// Route to sign the user out
+app.post("/signout", function(request, response) {
+
+    userData.logout(request.cookies.sessionID).then(function(res) {
+        if (res) {
+            var anHourAgo = new Date();
+            anHourAgo.setHours(anHourAgo.getHours() -1);
+
+            // invalidate, then clear so that lastAccessed no longer shows up on the cookie object
+            response.cookie("sessionID", "", { expires: anHourAgo });
+            response.clearCookie("sessionID");
 
             response.json({status: "success"});
         }
@@ -77,17 +108,6 @@ app.post("/signup", function(request, response) {
 
     userData.addUser(request.body.username, request.body.password).then(function(val) {
         response.json({status: request.body.username + " successfully added. Please try logging in."});
-    }, function(errorMessage) {
-        response.status(500).json({ error: errorMessage });
-    });
-
-});
-
-// Updates user info using the given request body
-app.post("/profile/editUserInfo", function(request, response) {
-
-    userData.editUserInfo(request.cookies.sessionID, request.body).then(function(val) {
-        response.redirect('/profile');
     }, function(errorMessage) {
         response.status(500).json({ error: errorMessage });
     });
