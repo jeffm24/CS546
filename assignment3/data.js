@@ -120,19 +120,18 @@ MongoClient.connect(fullMongoUrl)
             // Error checking
             if (!info || typeof info !== 'object') {
                 return Promise.reject("Invalid argument.");
-            } else if (!('firstName' in info) && !('lastName' in info) && !('hobby' in info) && !('perName' in info)) {
-                return Promise.reject("Please fill out at least one of the fields before submitting.");
             }
 
             // Get the user associated with the given sessionID (error checking done in function call)
             return exports.getUserBySessionID(sessionID).then(function(user) {
                 if (user) {
-                    // Update all valid fields that are included in the request body
-                    for (var key in info) {
-                        if (key === 'firstName' || key === 'lastName' || key === 'hobby' || key === 'petName') {
-                            usersCollection.update({"username": user.username}, {$set: {key: info[key]}});
-                        }
-                    }
+                    // Update profile
+                    usersCollection.update({"username": user.username}, {$set: {
+                        'profile.firstName': info.firstName,
+                        'profile.lastName': info.lastName,
+                        'profile.hobby': info.hobby,
+                        'profile.petName': info.petName
+                    }});
 
                     return Promise.resolve(true);
                 } else {
