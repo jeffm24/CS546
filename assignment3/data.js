@@ -29,6 +29,8 @@ MongoClient.connect(fullMongoUrl)
 
         // Adds a new user if one does not already exist with the given username
         exports.addUser = function (username, password) {
+
+            // Error checking
             if (!username || !password) {
                 return Promise.reject("You must provide both a username and password.");
             } else if (typeof username !== 'string' || typeof password !== 'string') {
@@ -61,6 +63,7 @@ MongoClient.connect(fullMongoUrl)
         // Logs a user in if the hash of the given password matches the hash associated with the given username in database.
         // Returns the generated sessionID as a Promise if the log in is successful
         exports.logIn = function (username, password) {
+
             // Error checking
             if (!username || !password) {
                 return Promise.reject("You must provide both a username and password.");
@@ -77,9 +80,10 @@ MongoClient.connect(fullMongoUrl)
                     if (bcrypt.compareSync(password, user.encryptedPassword)) {
                         // Create a new session ID for the user and update the user in the database
                         var sessionID = Guid.create().toString();
-                        usersCollection.update({"username": username}, {$set: {"currentSessionId": sessionID}});
 
-                        return Promise.resolve(sessionID);
+                        return usersCollection.update({"username": username}, {$set: {"currentSessionId": sessionID}}).then(function() {
+                            return Promise.resolve(sessionID);
+                        });
                     } else {
                         return Promise.reject("Incorrect password.");
                     }
@@ -91,22 +95,24 @@ MongoClient.connect(fullMongoUrl)
         };
 
         // Logs out the user with the given sessionID
-        exports.logout = function (sessionID) {
-            // Get the user associated with the given sessionID (error checking done in function call)
-            return exports.getUserBySessionID(sessionID).then(function(user) {
-                if (user) {
-                    // Clear the sessionID for the logged out user
-                    usersCollection.update({"username": user.username}, {$set: {"currentSessionId": ""}});
-                    return Promise.resolve(true);
-                } else {
-                    return Promise.reject("The user is already signed out.");
-                }
+        exports.logOut = function (userId) {
+
+            // Error checking
+            if (!userId) {
+                return Promise.reject("Invalid argument(s).")
+            }
+
+            // Clear the sessionID for the logged out user
+            return usersCollection.update({"_id": userId}, {$set: {"currentSessionId": ""}}).then(function() {
+                return Promise.resolve(true);
             });
+
         };
 
         // Gets a user with the given sessionID, returns null if the user does not exist
         exports.getUserBySessionID = function (sessionID) {
 
+            // Error checking
             if (sessionID) {
                 return usersCollection.findOne({ "currentSessionId": sessionID });
             } else {
@@ -115,28 +121,21 @@ MongoClient.connect(fullMongoUrl)
         };
 
         // Adds the given info to the user profile in the database
-        exports.editUserInfo = function (sessionID, info) {
+        exports.editUserInfo = function (userId, info) {
 
             // Error checking
-            if (!info || typeof info !== 'object') {
-                return Promise.reject("Invalid argument.");
+            if (!userId || !info || typeof info !== 'object') {
+                return Promise.reject("Invalid argument(s).");
             }
 
-            // Get the user associated with the given sessionID (error checking done in function call)
-            return exports.getUserBySessionID(sessionID).then(function(user) {
-                if (user) {
-                    // Update profile
-                    usersCollection.update({"username": user.username}, {$set: {
-                        'profile.firstName': info.firstName,
-                        'profile.lastName': info.lastName,
-                        'profile.hobby': info.hobby,
-                        'profile.petName': info.petName
-                    }});
-
-                    return Promise.resolve(true);
-                } else {
-                    return Promise.reject("The user is not logged in.");
-                }
+            // Update profile
+            return usersCollection.update({"_id": userId}, {$set: {
+                'profile.firstName': info.firstName,
+                'profile.lastName': info.lastName,
+                'profile.hobby': info.hobby,
+                'profile.petName': info.petName
+            }}).then(function() {
+                return Promise.resolve(true);
             });
         };
     });
