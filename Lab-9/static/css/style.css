@@ -1,0 +1,112 @@
+/* Styles I have provided: */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 14pt;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+h5 {
+    font-size: 1.25rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+.content {
+    margin: auto;
+	padding: 0 25pt;
+}
+
+body {
+	color: #333;
+}
+
+main h1, main h2, main h3, main h4, main h5, main h6 {
+	text-align: center;
+}
+
+section.chapter {
+	border-top: 1px solid #999;
+	padding: 20pt 0;
+    background: #FFF;
+}
+
+a {
+	color: #44609D;
+}
+
+ nav ul {
+ 	padding: 0;
+ 	list-style: none;
+ }
+
+ nav li {
+    width: 300px;
+ }
+
+ /* Solution */
+
+::-moz-selection {
+    color: #FFF;
+    background-color: #44609D;
+}
+::selection {
+    color: #FFF;
+    background-color: #44609D;
+}
+
+.chapter p:first-of-type::first-letter {
+    font-size: 2rem;
+    font-family: 'Great Vibes', cursive;
+}
+
+.chapter p:first-of-type::first-line {
+    font-size: 1.75rem;
+}
+
+@media screen and (min-width: 750px) {
+    nav li:hover {
+        transform: scale(1.5, 1.5);
+        transition: transform 0.5s;
+    }
+
+    html {
+        font-size: 18pt;
+    }
+
+    .content {
+        width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .chapter {
+        opacity: 0.75;
+        transition: opacity 0.5s;
+    }
+
+    .chapter:focus, .chapter:hover, .chapter.active {
+        opacity: 1.0;
+    }
+
+}

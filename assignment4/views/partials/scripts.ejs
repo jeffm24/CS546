@@ -1,0 +1,161 @@
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- jQuery fallback -->
+<script>
+    if (!window.jQuery) { document.write('<script src="/assets/js/jquery.js"><\/script>'); }
+</script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<script>
+    var displayRequestPath = '/api/movies';
+
+    // Gets the movies from the database and displays them
+    function requestMovies(path) {
+        // Set the global displayRequestPath to the path that is being requested
+        displayRequestPath = path;
+
+        // Get the movies from the requested path and update the UI
+        $.ajax({
+            url: displayRequestPath,
+            type: 'GET',
+            success: function(movies) {
+                $('#movies').html('');
+                for (i in movies) {
+                    $('#movies').append('<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">' +
+                        '<div id="' + movies[i]._id + '" class="movie-entry text-center">' +
+                            '<p><b>' + movies[i].title + '</b>: ' + movies[i].rating + '</p>' +
+                            '<button type="button" class="btn btn-success increment-rating" data-movie="' + movies[i]._id + '"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>' +
+                            '<button type="button" class="btn btn-warning decrement-rating" data-movie="' + movies[i]._id + '"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>' +
+                            '<button type="button" class="btn btn-danger remove" data-movie="' + movies[i]._id + '">Remove</button>' +
+                        '</div>' +
+                    '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText + ' (' + xhr.status + ')');
+            }
+        });
+    }
+
+    // Click handler for the "Load All Movies" link
+    $('#load-all-movies').click(function(e) {
+        // Re-request the movie list for the new path
+        requestMovies('/api/movies');
+
+        // Set the btn-primary class to this and remove it from the other button
+        $(this).attr('class', 'btn btn-primary');
+        $('#load-best-movies').attr('class', 'btn');
+
+        return false;
+    });
+
+    // Click handler for the "Load Best Movies" link
+    $('#load-best-movies').click(function(e) {
+        // Re-request the movie list for the new path
+        requestMovies('/api/movies/best');
+
+        // Set the btn-primary class to this and remove it from the other button
+        $(this).attr('class', 'btn btn-primary');
+        $('#load-all-movies').attr('class', 'btn');
+
+        return false;
+    });
+
+    // Click handler for the Increment Rating and Decrement Rating buttons
+    $(document).on('click', '.increment-rating, .decrement-rating', function(e) {
+        var movieId = $(this).data('movie');
+        var $self = $(this);
+
+        // First get the current movie info from the database
+        $.ajax({
+            url: '/api/movies/' + movieId,
+            type: 'GET',
+            success: function(data) {
+                var movieTitle = data.title;
+                var newRating = data.rating;
+
+                // Check whether to increment or decrement the rating based on which button was clicked
+                if ($self.hasClass('increment-rating')) {
+                    if (++newRating > 5) {
+                        newRating = 5;
+                    }
+                } else {
+                    if (--newRating < 0) {
+                        newRating = 0;
+                    }
+                }
+
+                // Then update it and show the updated info to the user
+                $.ajax({
+                    url: '/api/movies/' + movieId,
+                    type: 'PUT',
+                    data: JSON.stringify({
+                        "title": movieTitle,
+                        "rating": newRating
+                    }),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function(movie) {
+                        // Re-request the movie list
+                        requestMovies(displayRequestPath);
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText + ' (' + xhr.status + ')');
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText + ' (' + xhr.status + ')');
+            }
+        });
+    });
+
+    // Remove button click handler
+    $(document).on('click', '.remove', function(e) {
+        var movieId = $(this).data('movie');
+
+        // Delete the movie
+        $.ajax({
+            url: '/api/movies/' + movieId,
+            type: 'DELETE',
+            success: function(movie) {
+                // Re-request the movie list
+                requestMovies(displayRequestPath);
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText + ' (' + xhr.status + ')');
+            }
+        });
+    });
+
+    // Add movie form submit handler
+    $('#add-movie-form').submit(function() {
+
+        // Add the movie to the database
+        $.ajax({
+            url: '/api/movies/',
+            type: 'POST',
+            data: JSON.stringify({
+                "title": $('#movie-title').val(),
+                "rating": +$('#movie-rating').val()
+            }),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(movie) {
+                // Re-request the movie list and clear out the form on success
+                requestMovies(displayRequestPath);
+
+                $('#movie-title').val('');
+                $('#movie-rating').val('');
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText + ' (' + xhr.status + ')');
+            }
+        });
+
+        return false;
+    });
+</script>
